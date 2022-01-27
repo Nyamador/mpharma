@@ -1,6 +1,5 @@
 import React from "react";
-import logo from "./logo.svg";
-import { Products } from "./features/products/Product";
+import Products from "./features/products/Product";
 import "./App.css";
 
 function App() {

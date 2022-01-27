@@ -1,17 +1,23 @@
+import axios from "axios";
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchProducts } from "./productAPI";
 
 const initialState = {
   products: [],
-  loading: false,
+  loading: true,
 };
 
 export const getProductsAsync = createAsyncThunk(
   "products/fetchProducts",
-  async ({ rejectWithValue }) => {
-    fetchProducts()
-      .then((res) => res.data)
-      .catch((err) => rejectWithValue(err.response.data));
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        "http://www.mocky.io/v2/5c3e15e63500006e003e9795"
+      );
+      return response.data.products;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
