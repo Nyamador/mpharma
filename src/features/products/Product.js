@@ -10,13 +10,15 @@ const Products = (props) => {
     name: "",
     prices: [], //{id:0, price: 10, date: 120}
   });
-  const { loading, getProducts, allProducts } = props;
+  const { loading, getProducts, addProduct, allProducts, nextId } = props;
 
   useEffect(() => {
     getProducts();
   }, []);
 
-  const handleProductSave = () => {};
+  const handleProductSave = () => {
+    addProduct({ ...productData, id: nextId });
+  };
 
   // {id:"", name: '', prices: [{date:"", id: "", price: ""}]}
 
@@ -44,11 +46,13 @@ const Products = (props) => {
           onChange={(e) =>
             setProductData({
               ...productData,
-              prices: {
-                date: new Date().toISOString(),
-                id: 1,
-                price: e.target.value,
-              },
+              prices: [
+                {
+                  date: new Date().toISOString(),
+                  id: 1,
+                  price: e.target.value,
+                },
+              ],
             })
           }
         />
@@ -88,6 +92,7 @@ const Products = (props) => {
 const mapStateToProps = ({ products }) => ({
   allProducts: products.products,
   loading: products.loading,
+  nextId: products.nextId,
 });
 
 const mapDispatchToProps = {

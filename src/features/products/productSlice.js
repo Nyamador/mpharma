@@ -5,6 +5,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
   products: [],
   loading: true,
+  nextId: 0,
   mode: "save", // save || edit
 };
 
@@ -37,6 +38,8 @@ export const productSlice = createSlice({
   reducers: {
     addProduct: (state, action) => {
       state.products = [...state.products, action.payload];
+      state.nextId = state.products[state.products.length - 1].id + 1;
+      window.localStorage.setItem("products", JSON.stringify(state.products));
     },
   },
   extraReducers: (builder) => {
@@ -46,6 +49,7 @@ export const productSlice = createSlice({
       })
       .addCase(getProductsAsync.fulfilled, (state, action) => {
         state.products = action.payload;
+        state.nextId = state.products[state.products.length - 1].id + 1;
         state.loading = false;
       })
       .addCase(getProductsAsync.rejected, (state) => {
