@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import { getProductsAsync, addProduct } from "./productSlice";
+import { getProductsAsync, addProduct, deleteProduct } from "./productSlice";
 import styles from "./Product.module.css";
 
 const Products = (props) => {
@@ -10,17 +10,18 @@ const Products = (props) => {
     name: "",
     prices: [], //{id:0, price: 10, date: 120}
   });
-  const { loading, getProducts, addProduct, allProducts, nextId } = props;
+  const {
+    loading,
+    getProducts,
+    addProduct,
+    deleteProduct,
+    allProducts,
+    nextId,
+  } = props;
 
   useEffect(() => {
     getProducts();
   }, []);
-
-  const handleProductSave = () => {
-    addProduct({ ...productData, id: nextId });
-  };
-
-  // {id:"", name: '', prices: [{date:"", id: "", price: ""}]}
 
   if (loading) {
     return (
@@ -56,7 +57,10 @@ const Products = (props) => {
             })
           }
         />
-        <button className={styles.button} onClick={handleProductSave}>
+        <button
+          className={styles.button}
+          onClick={() => addProduct({ ...productData, id: nextId })}
+        >
           Save
         </button>
       </div>
@@ -80,7 +84,12 @@ const Products = (props) => {
               >
                 Edit
               </button>
-              <button className={styles.actionBtn}>Delete</button>
+              <button
+                onClick={() => deleteProduct(product.id)}
+                className={styles.actionBtn}
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))}
@@ -97,6 +106,7 @@ const mapStateToProps = ({ products }) => ({
 
 const mapDispatchToProps = {
   getProducts: getProductsAsync,
+  deleteProduct: deleteProduct,
   addProduct: addProduct,
 };
 

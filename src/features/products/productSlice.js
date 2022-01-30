@@ -41,6 +41,13 @@ export const productSlice = createSlice({
       state.nextId = state.products[state.products.length - 1].id + 1;
       window.localStorage.setItem("products", JSON.stringify(state.products));
     },
+    deleteProduct: (state, action) => {
+      const targetProduct = state.products.find(
+        (product) => product.id === action.payload
+      );
+      const targetProductIndex = state.products.indexOf(targetProduct);
+      state.products.splice(targetProductIndex, 1);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -58,6 +65,6 @@ export const productSlice = createSlice({
   },
 });
 
-export const { addProduct } = productSlice.actions;
+export const { addProduct, deleteProduct } = productSlice.actions;
 
 export default productSlice.reducer;
